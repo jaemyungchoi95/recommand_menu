@@ -9,6 +9,7 @@ async function appendToNotion(pageId, picks) {
     month: "2-digit",
     day: "2-digit",
     weekday: "short",
+    timeZone: "Asia/Seoul",
   }).format(new Date());
 
   await notion.blocks.children.append({
@@ -23,15 +24,41 @@ async function appendToNotion(pageId, picks) {
           ],
         },
       },
-      ...picks.map((p) => ({
+      {
         object: "block",
-        type: "bulleted_list_item",
-        bulleted_list_item: {
-          rich_text: [
-            { type: "text", text: { content: `${p.상호명} - ${p.주요메뉴}` } },
+        type: "table",
+        table: {
+          table_width: 4,
+          has_column_header: true,
+          has_row_header: false,
+          children: [
+            {
+              object: "block",
+              type: "table_row",
+              table_row: {
+                cells: [
+                  [{ type: "text", text: { content: "상호명" } }],
+                  [{ type: "text", text: { content: "주요메뉴" } }],
+                  [{ type: "text", text: { content: "가격" } }],
+                  [{ type: "text", text: { content: "주소" } }],
+                ],
+              },
+            },
+            ...picks.map((p) => ({
+              object: "block",
+              type: "table_row",
+              table_row: {
+                cells: [
+                  [{ type: "text", text: { content: p.상호명 ?? "" } }],
+                  [{ type: "text", text: { content: p.주요메뉴 ?? "" } }],
+                  [{ type: "text", text: { content: p.가격 ?? "" } }],
+                  [{ type: "text", text: { content: p.주소 ?? "" } }],
+                ],
+              },
+            })),
           ],
         },
-      })),
+      },
       {
         object: "block",
         type: "divider",
