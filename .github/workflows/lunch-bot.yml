@@ -3,7 +3,7 @@ name: Notion Lunch Bot
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 2 * * 1-5" # KST 11:30, 평일
+    - cron: "50 1 * * 1-5" # KST 11:30, 평일
 
 jobs:
   run:
